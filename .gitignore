@@ -6,6 +6,7 @@ front/node_modules/*
 
 *__pycache__*
 __pycache__*
+*migrations*
 
 # Logs
 front/logs
