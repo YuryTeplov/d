@@ -3,3 +3,37 @@ db-data/*
 front/node_modules/*
 *.sglite3
 *.vscode*
+
+*__pycache__*
+__pycache__*
+
+# Logs
+front/logs
+*.log
+front/npm-debug.log*
+front/yarn-debug.log*
+front/yarn-error.log*
+front/pnpm-debug.log*
+front/lerna-debug.log*
+
+front/node_modules
+front/.DS_Store
+front/dist
+front/dist-ssr
+front/coverage
+front/*.local
+
+front/cypress/videos/
+front/cypress/screenshots/
+
+# Editor directories and files
+front/.vscode/*
+front/!.vscode/extensions.json
+front/.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+*.tsbuildinfo
