@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'resource',
     'skill',
     'corsheaders',
+    'account',
 ]
 
 MIDDLEWARE = [

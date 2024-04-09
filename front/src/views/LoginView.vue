@@ -17,7 +17,6 @@
 
 
 <script>
-import axios from 'axios';
 
 export default {
   data() {
@@ -28,7 +27,7 @@ export default {
   },
   methods: {
     login() {
-      axios.post('/api/token/', {
+      this.$axios.post('/api/token/', {
         username: this.username,
         password: this.password
       })

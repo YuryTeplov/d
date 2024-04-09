@@ -17,9 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from account.views import UserAPIView, CurrentUserView
+from skill.views import get_skills_for_profession
+from resource.views import load_videos_by_skill 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/users/', UserAPIView.as_view(), name='user-list'),
+    path('api/user/current/', CurrentUserView.as_view(), name='current-user'),
+    path('api/skill/<str:search>', get_skills_for_profession, name='skills'),
+    path('api/videos/<str:search>', load_videos_by_skill, name='load_videos'),
 ]
