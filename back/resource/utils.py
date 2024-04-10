@@ -2,9 +2,10 @@ from googleapiclient.discovery import build
 
 # Модели
 from .models import YouTubeVideo, VideoSkill
+import os
 
 # API YouTube
-API_KEY = "YOUR_API_KEY"
+API_KEY = os.getenv('YOUTUBE_API_KEY', '') 
 
 def search_youtube_videos(skill_name):
   """
@@ -27,14 +28,18 @@ def search_youtube_videos(skill_name):
 
   response = request.execute()
 
+
   videos = []
 
   for video in response["items"]:
-    videos.append({
-      "title": video["snippet"]["title"],
-      "description": video["snippet"]["description"],
-      "youtube_url": "https://www.youtube.com/watch?v=" + video["id"]["videoId"],
-    })
+    if video["id"]["kind"] == "youtube#video" and video["id"]["videoId"]:
+      thumbnail_url = video["snippet"]["thumbnails"]["default"]["url"] 
+      videos.append({
+        "title": video["snippet"]["title"],
+        "description": video["snippet"]["description"],
+        "youtube_url": "https://www.youtube.com/watch?v=" + video["id"]["videoId"],
+        "thumbnail_url": thumbnail_url,
+      })
 
   return videos
 
@@ -55,6 +60,7 @@ def add_videos_to_database(videos, skill):
       title=video["title"],
       description=video["description"],
       youtube_url=video["youtube_url"],
+      thumbnail_url=video["thumbnail_url"],
     )
 
     if created:

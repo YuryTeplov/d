@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 
 class Skill(models.Model):
   """
@@ -9,3 +10,7 @@ class Skill(models.Model):
 
   def __str__(self):
     return self.name
+
+class Knowledge(models.Model):
+  user_id = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+  skill_id = models.ForeignKey(Skill, on_delete=models.CASCADE)

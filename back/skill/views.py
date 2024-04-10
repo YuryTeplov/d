@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import re
 import fake_headers
 from .models import Skill
+from collections import Counter
 
 def get_tags(url):
   """
@@ -27,7 +28,6 @@ def get_tags(url):
   # Список тэгов
   tags = []
 
-  print('111111111111')
   for tag_element in soup.find_all('span', class_='bloko-tag__section_text'):
     tag = tag_element.text
     tags.append(tag)
@@ -76,8 +76,17 @@ def get_vacancies(job_title):
     for link in soup.find_all('a', class_='bloko-link'):
         vacancy_link = link['href']
         if has_vacancy(vacancy_link): 
-            skills.append(get_tags(vacancy_link))
-    return skills
+            skills = [*skills, *(get_tags(vacancy_link))]
+
+    skills_counter = Counter(skills)
+
+    top_5_skills = skills_counter.most_common(5)
+
+    unique_skills = []
+    for skill, count in top_5_skills:
+        if skill not in unique_skills:
+            unique_skills.append(skill)
+    return unique_skills
   else:
     raise Exception("Ошибка при запросе к HeadHunter: " + str(response.status_code))
 
@@ -90,9 +99,9 @@ def get_skills_for_profession(request, search):
         # Сохранение новых навыков в базе данных
         for skill_name in skills:
             skill, created = Skill.objects.get_or_create(name=skill_name)
-            if created:
-                print(f"Сохранен новый навык: {skill_name}")
 
-        return JsonResponse(skills)
+        resp = JsonResponse({'skills': skills}, charset='utf-8')
+
+        return resp
     except: 
         return JsonResponse({'error': 'error'})

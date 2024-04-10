@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'skill',
     'corsheaders',
     'account',
+    'like',
 ]
 
 MIDDLEWARE = [

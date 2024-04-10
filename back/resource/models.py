@@ -8,6 +8,7 @@ class YouTubeVideo(models.Model):
   title = models.CharField(max_length=255)
   description = models.TextField()
   youtube_url = models.URLField()
+  thumbnail_url = models.URLField(default='')
 
   def __str__(self):
     return self.title
