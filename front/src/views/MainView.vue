@@ -22,16 +22,8 @@
         <div class="video-list" v-if="videos.length > 0">
           <h2>Videos for {{ current_skill }}</h2>
           <ul>
-            <li v-for="video in videos" :key="video.id">
-              <div class="video-item">
-                <a :href="video.youtube_url" target="_blank">
-                  <img :src="video.thumbnail_url" alt="Thumbnail">
-                </a>
-                <div class="video-info">
-                  <h3>{{ video.title }}</h3>
-                  <p>{{ video.description }}</p>
-                </div>
-              </div>
+            <li v-for="(video, k) in videos" :key="k">
+              <VideoCard :video="video"></VideoCard>
             </li>
           </ul>
         </div>
@@ -51,10 +43,16 @@
 
 
 <script>
+import { useAuthStore } from '../store/useAuthStore';
+import VideoCard from '../components/VideoCard.vue';
 
 export default {
+  components: {
+    VideoCard
+  },
   data() {
     return {
+      current_skill: '',
       user_data: {},
       input_text: '',
       skills: [],
@@ -63,13 +61,16 @@ export default {
   },
   methods: {
     async load_videos_by_this_skill(skill) {
-      const response = await this.$axios.get('/api/videos/' + skill)
+      const response = await this.$axios.get('/api/videos/${skill}/',{ params: {skill_name: skill}})
 
       this.videos = response.data.videos
     },
     logout() {
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('refreshToken')
+
+      const store = useAuthStore();
+
+      store.removeToken();
+
       this.$router.push('/')
     },
     async submit() {

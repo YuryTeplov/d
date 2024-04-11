@@ -17,6 +17,8 @@
 
 
 <script>
+import { useAuthStore } from '../store/useAuthStore';
+
 
 export default {
   data() {
@@ -32,11 +34,12 @@ export default {
         password: this.password
       })
       .then(response => {
-        // Save the JWT token in localStorage or Vuex store
-        localStorage.setItem('accessToken', response.data.access);
-        localStorage.setItem('refreshToken', response.data.refresh);
+
+        const store = useAuthStore();
+
+        store.setToken(response.data.access);
+
         this.$router.push('/main')
-        // Redirect or perform other actions after successful login
       })
       .catch(error => {
         console.error('Error logging in:', error);

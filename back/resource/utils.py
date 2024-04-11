@@ -23,7 +23,7 @@ def search_youtube_videos(skill_name):
   request = youtube.search().list(
     part="snippet",
     q=skill_name,
-    maxResults=10,
+    maxResults=100,
   )
 
   response = request.execute()

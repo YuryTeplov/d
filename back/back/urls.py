@@ -19,7 +19,6 @@ from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from account.views import UserAPIView, CurrentUserView
 from skill.views import get_skills_for_profession
-from resource.views import load_videos_by_skill 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +27,6 @@ urlpatterns = [
     path('api/users/', UserAPIView.as_view(), name='user-list'),
     path('api/user/current/', CurrentUserView.as_view(), name='current-user'),
     path('api/skill/<str:search>', get_skills_for_profession, name='skills'),
-    path('api/videos/<str:skill_name>', load_videos_by_skill, name='load_videos'),
+    path('api/', include('resource.urls')),
     path('api/', include('like.urls')),
 ]

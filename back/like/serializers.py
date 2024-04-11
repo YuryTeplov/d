@@ -7,6 +7,7 @@ class LikeSerializer(serializers.ModelSerializer):
     fields = ('id', 'video', 'user', 'timestamp')
 
 class CreateLikeSerializer(serializers.ModelSerializer):
+  video_id = serializers.IntegerField(required=True)
   class Meta:
     model = Like
     fields = ('video_id', 'user_id')
