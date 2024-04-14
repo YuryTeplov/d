@@ -8,8 +8,13 @@
             <p>{{ video.description }}</p>
         </div>
         <div>
-            Количество баллов для рекомендации по контенту: {{ video.similarity_score_cbf }} 
-            Количество баллов для рекомендации по методу коллаборативной фильтрации: {{ video.similarity_score_cf}}
+            <span style="font-size: 10px;">
+                Количество баллов для рекомендации по контенту: {{ video.similarity_score_cbf }} 
+            </span>
+            <br/>
+            <span style="font-size: 10px;">
+                Количество баллов для рекомендации по методу коллаборативной фильтрации: {{ video.similarity_score_cf}}
+            </span>
         </div>
         <button 
             class="like-button" 

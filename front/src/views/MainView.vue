@@ -23,7 +23,7 @@
         </div>
 
         <div class="video-list" v-if="videos.length > 0">
-          <h2>Videos for {{ current_skill }}</h2>
+          <h2>Видо по теме "{{ current_skill }}" </h2>
           <ul>
             <li v-for="(video, k) in videos" :key="k">
               <VideoCard :video="video"></VideoCard>
@@ -68,6 +68,8 @@ export default {
   methods: {
     async load_videos_by_this_skill(skill) {
       const response = await this.$axios.get('/api/videos/${skill}/',{ params: {skill_name: skill}})
+
+      this.current_skill = skill
 
       this.videos = response.data.videos
     },
