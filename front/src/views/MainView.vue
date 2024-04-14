@@ -1,19 +1,22 @@
 <template>
   <div class="container" id="service-page">
-    <header class="content">
-      <h1>Your Service Name</h1>
+    <header>
+      <h1>Рекомендация обучающих материалов</h1>
     </header>
 
     <main class="content">
       <section class="input-section">
-        <label for="textInput">Enter Text:</label>
-        <input type="text" id="textInput" v-model="input_text">
-        <button @click="submit" :disabled="!input_text">Submit</button>
+        <form @submit.prevent="submit">
+          <label for="textInput">Введите название профессии:</label>
+          <input type="text" id="textInput" v-model="input_text">
+          <button :disabled="!input_text">Запросить навыки</button>
+        </form>
       </section>
 
 
       <section class="skills-and-videos">
-        <div class="skill-buttons">
+        <LoaderComponent v-if="loading_skills"></LoaderComponent>
+        <div v-else class="skill-buttons">
           <button v-for="skill in skills" @click="load_videos_by_this_skill(skill)" :key="skill">
             {{ skill }}
           </button>
@@ -45,13 +48,16 @@
 <script>
 import { useAuthStore } from '../store/useAuthStore';
 import VideoCard from '../components/VideoCard.vue';
+import LoaderComponent from '../components/Loader.vue'
 
 export default {
   components: {
-    VideoCard
+    VideoCard,
+    LoaderComponent,
   },
   data() {
     return {
+      loading_skills: false,
       current_skill: '',
       user_data: {},
       input_text: '',
@@ -74,9 +80,16 @@ export default {
       this.$router.push('/')
     },
     async submit() {
-      const response = await this.$axios.get('/api/skill/' + this.input_text)
+      try {
+        this.loading_skills = true
 
-      this.skills = response.data.skills
+        const response = await this.$axios.get('/api/skill/' + this.input_text)
+        this.skills = response.data.skills
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.loading_skills = false
+      }
     },
   },
   async mounted() {

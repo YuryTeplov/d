@@ -35,9 +35,10 @@ export default {
       })
       .then(response => {
 
-        const store = useAuthStore();
+        const store = useAuthStore()
 
-        store.setToken(response.data.access);
+        store.setRefreshToken(response.data.refresh)
+        store.setToken(response.data.access)
 
         this.$router.push('/main')
       })
