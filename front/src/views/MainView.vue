@@ -7,6 +7,10 @@
     <main class="content">
       <section class="input-section">
         <form @submit.prevent="submit">
+
+          <label for="selectBox">Select an option:</label>
+          <SelectBox v-model="selectedOption" :options="options"></SelectBox>
+
           <label for="textInput">Введите название профессии:</label>
           <input type="text" id="textInput" v-model="input_text">
           <button :disabled="!input_text">Запросить навыки</button>
@@ -23,7 +27,7 @@
         </div>
 
         <div class="video-list" v-if="videos.length > 0">
-          <h2>Видо по теме "{{ current_skill }}" </h2>
+          <h2>Видео по теме "{{ current_skill }}" </h2>
           <ul>
             <li v-for="(video, k) in videos" :key="k">
               <VideoCard :video="video"></VideoCard>
@@ -46,14 +50,17 @@
 
 
 <script>
-import { useAuthStore } from '../store/useAuthStore';
-import VideoCard from '../components/VideoCard.vue';
+import { useAuthStore } from '../store/useAuthStore'
+import VideoCard from '../components/VideoCard.vue'
 import LoaderComponent from '../components/Loader.vue'
+import SelectBox from '../components/SelectBox.vue'
+
 
 export default {
   components: {
     VideoCard,
     LoaderComponent,
+    SelectBox,
   },
   data() {
     return {
@@ -63,6 +70,15 @@ export default {
       input_text: '',
       skills: [],
       videos: [],
+      
+      selectedOption: '1',
+      options: [
+        { label: 'Option 1', value: '1' },
+        { label: 'Option 2', value: '2' },
+        { label: 'Option 3', value: '3' },
+        { label: 'Option 4', value: '4' }
+      ]
+
     };
   },
   methods: {

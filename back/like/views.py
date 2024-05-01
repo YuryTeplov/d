@@ -27,7 +27,6 @@ class LikeViewSet(viewsets.ModelViewSet):
 
   def destroy(self, request, pk=None):
     # Handle case where pk is not provided
-    print(pk)
     if not pk:
       return Response({'error': 'Missing video ID in request'}, status=status.HTTP_400_BAD_REQUEST)
 

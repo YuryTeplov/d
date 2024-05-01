@@ -1,5 +1,8 @@
 from django.db import models
 
+class ResourceType(models.Model):
+  name = models.CharField(max_length=255)
+
 class YouTubeVideo(models.Model):
   """
   Модель для хранения информации о видео на YouTube
@@ -9,6 +12,7 @@ class YouTubeVideo(models.Model):
   description = models.TextField()
   youtube_url = models.URLField()
   thumbnail_url = models.URLField(default='')
+  type = models.ForeignKey(ResourceType, on_delete=models.CASCADE)
 
   def __str__(self):
     return self.title
