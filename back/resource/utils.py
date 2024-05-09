@@ -1,8 +1,62 @@
 from googleapiclient.discovery import build
+import requests
+import fake_headers
+from bs4 import BeautifulSoup
 
 # Модели
 from .models import YouTubeVideo, VideoSkill
 import os
+
+def get_course_data(search_string):
+  """
+  Функция парсит данные курса с URL-адреса.
+
+  Args:
+    url (str): URL-адрес страницы курса.
+
+  Returns:
+    dict: Словарь с информацией о курсе, 
+         включая название, описание, изображение и ссылку.
+  """
+
+  headers_gen = fake_headers.Headers(os='win', browser='yandex')
+
+  response = requests.get('https://www.coursera.org/search?query='+search_string, headers=headers_gen)
+  soup = BeautifulSoup(response.content, 'lxml')
+
+  course_title = soup.find('h2', class_='title').text.strip()
+  course_description = soup.find('div', class_='description').text.strip()
+  course_image = soup.find('img', class_='card-img-top')['src']
+  course_link = url
+
+  return {
+      'title': course_title,
+      'description': course_description,
+      'image': course_image,
+      'link': course_link
+  }
+
+def get_courses(url):
+  """
+  Функция парсит список курсов с URL-адреса.
+
+  Args:
+    url (str): URL-адрес страницы с курсами.
+
+  Returns:
+    list: Список словарей с информацией о курсах.
+  """
+  response = requests.get(url)
+  soup = BeautifulSoup(response.content, 'lxml')
+
+  courses = []
+  for course_card in soup.find_all('div', class_='card'):
+    course_url = course_card.find('a')['href']
+    course_data = get_course_data(course_url)
+    courses.append(course_data)
+
+  return courses
+
 
 # API YouTube
 API_KEY = os.getenv('YOUTUBE_API_KEY', '') 

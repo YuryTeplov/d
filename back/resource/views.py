@@ -98,6 +98,9 @@ def get_videos(skill_name):
   if not youtube_videos:
     # Получение видео с YouTube
     youtube_videos = search_youtube_videos(skill_name)
+    courses = get_course_data(skill_name)
+
+    print(courses)
 
 
     # Сохранение видео в базе данных
