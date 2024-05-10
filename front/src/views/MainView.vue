@@ -8,8 +8,10 @@
       <section class="input-section">
         <form @submit.prevent="submit">
 
+          <!--
           <label for="selectBox">Select an option:</label>
           <SelectBox v-model="selectedOption" :options="options"></SelectBox>
+          -->
 
           <label for="textInput">Введите название профессии:</label>
           <input type="text" id="textInput" v-model="input_text">
